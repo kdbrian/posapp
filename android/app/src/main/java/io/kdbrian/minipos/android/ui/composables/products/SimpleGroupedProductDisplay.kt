@@ -24,7 +24,7 @@ fun SimpleGroupedProductDisplay(
     modifier: Modifier,
     productsQuery: GetAllProductsQuery.GetProduct
 ) {
-    var currentImage by remember { mutableStateOf(productsQuery.images?.get(0).toString()) }
+    var currentImage by remember { mutableStateOf(productsQuery.productInfoWithImages.images?.get(0).toString()) }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,

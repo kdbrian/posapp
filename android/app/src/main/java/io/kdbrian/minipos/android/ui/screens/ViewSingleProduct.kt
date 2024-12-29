@@ -115,7 +115,10 @@ fun ViewSingleProduct(
                             .height(200.dp)
                             .padding(horizontal = 12.dp, vertical = 8.dp)
                     ) {
-                        Box {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
 
                             productInfo.images?.let {
                                 Timber.d("Url ${BuildConfig.ngrokHost}${productInfo.images[0]}")
@@ -127,8 +130,7 @@ fun ViewSingleProduct(
                                     model = currentImage,
                                     contentDescription = productInfo.productName,
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                    ,
+                                        .fillMaxWidth(),
                                     placeholder = painterResource(R.drawable.product_preview),
                                     contentScale = ContentScale.Crop,
                                 )
@@ -138,8 +140,7 @@ fun ViewSingleProduct(
                                     contentDescription = null,
                                     modifier = Modifier
                                         .size(64.dp)
-                                        .align(Alignment.Center)
-                                    ,
+                                        .align(Alignment.Center),
                                 )
                             }
                         }

@@ -48,8 +48,6 @@ fun App(
         composable(route = AppScreens.POS_HOME_SCREEN.route) {
             //TODo:Fetch settings and load composables as per user settings e.g
             // for the search screen a use can set a defined they want then we display it and provide a way to change
-
-
             ProductsScreen(
                 productsBanner = {
                     ProductsStatsPlugins.ProductsStatsBannerWithProductsTransactionsPieChart(
@@ -101,6 +99,7 @@ fun App(
         composable(route = AppScreens.VIEW_ALL_PRODUCT.route) {
             Portfolio(modifier = modifier, allProductsResource, allTransactionsResource)
         }
+
         composable(route = "${AppScreens.VIEW_SEARCH_PRODUCT_RESULTS.route}/{searchQuery}") {
             Portfolio(modifier = modifier, allProductsResource, allTransactionsResource)
         }
@@ -119,8 +118,8 @@ fun App(
             val productId = it.arguments?.getString("productId")
             val productData = it.arguments?.getString("productData").toString()
             Timber.d("viewing $productData")
-            val decodedProduct = Json{ignoreUnknownKeys = true}.decodeFromString<GetAllProductsQuery.GetProduct>(productData)
-            Timber.d("viewing ${decodedProduct.productId == productId} $decodedProduct")
+//            val decodedProduct = Json{ignoreUnknownKeys = true}.decodeFromString<GetAllProductsQuery.GetProduct>(productData)
+//            Timber.d("viewing ${decodedProduct.productId == productId} $decodedProduct")
 
             LaunchedEffect(Unit) {
                 Timber.d("Product $productId")

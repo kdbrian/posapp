@@ -4,6 +4,7 @@ import io.apptales.minipos.data.model.StockTransaction;
 import org.bson.Document;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StockTransactionsService {
 
@@ -27,4 +28,12 @@ public interface StockTransactionsService {
     void deleteTransaction(String transactionId);
 
     StockTransaction getTransactionWithId(String id);
+
+
+    //TODO: aggregations & data graduation
+    Map<String, Integer> getStockInVsOutCount();
+    Map<String, Integer> getProductsByCategories();
+//    public Map<String, Long> getDiscountDistribution();
+
+
 }

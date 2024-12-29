@@ -2,17 +2,14 @@ package io.apptales.minipos.domain.rest;
 
 import io.apptales.minipos.data.model.StockTransaction;
 import io.apptales.minipos.service.StockTransactionsService;
-import org.bson.Document;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/transactions")
+@RequestMapping("/api/stock-transactions")
 public class StockTransactionsController {
 
     private final StockTransactionsService stockTransactionsService;
@@ -24,7 +21,31 @@ public class StockTransactionsController {
     @GetMapping("/{productId}")
     public ResponseEntity<List<StockTransaction>> getProductTransactions(
             @PathVariable String productId
-    ){
+    ) {
         return ResponseEntity.ok(stockTransactionsService.getTransactionsForProduct(productId));
+    }
+
+
+    @GetMapping("/trends")
+    public ResponseEntity<Map<String, Integer>> getTrends(
+            @RequestParam(value = "main", required = false) String main
+    ) {
+
+        if (main != null) {
+            switch (main.toLowerCase()) {
+
+                case "stockinvsstockout", "stockinstockout", "stock" -> {
+                    return ResponseEntity.ok(stockTransactionsService.getStockInVsOutCount());
+                }
+
+
+                case "cat","categories" -> {
+                    return ResponseEntity.ok(stockTransactionsService.getProductsByCategories());
+                }
+            }
+        }
+
+        return ResponseEntity.ok(Map.of("Missing query parameter", 0));
+
     }
 }

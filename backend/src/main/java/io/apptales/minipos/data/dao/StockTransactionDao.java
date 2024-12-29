@@ -27,4 +27,9 @@ public interface StockTransactionDao extends MongoRepository<StockTransaction, S
 
     List<StockTransaction> findByDateAddedAfter(Long date);
 
+
+    //TODO: aggregations & data graduation
+
+
+
 }

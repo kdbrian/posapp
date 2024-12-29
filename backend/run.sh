@@ -3,7 +3,6 @@
 
 echo "starting ngrok app....."
 
-
 ngrok http 8080 > ngrok.log &
 
 sleep 3

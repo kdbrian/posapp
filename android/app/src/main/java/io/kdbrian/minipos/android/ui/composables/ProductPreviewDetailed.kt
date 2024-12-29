@@ -108,11 +108,12 @@ fun ProductCard(
                 contentAlignment = Alignment.Center
             ) {
 
-                product.images?.let {
-                    val randomImagePosition = (0..<product.images.size).random()
-                    Timber.d("Url ${BuildConfig.ngrokHost}${product.images[0]}")
+                val images = product.productInfoWithImages.images
+                images?.let {
+                    val randomImagePosition = (0..<images.size).random()
+                    Timber.d("Url ${BuildConfig.ngrokHost}${images[0]}")
                     AsyncImage(
-                        model = "${BuildConfig.ngrokHost}${product.images[randomImagePosition]}",
+                        model = "${BuildConfig.ngrokHost}${images[randomImagePosition]}",
                         contentDescription = product.productName,
                         modifier = Modifier
                             .size(50.dp)

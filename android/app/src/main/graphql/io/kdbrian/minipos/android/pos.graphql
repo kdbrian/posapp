@@ -1,28 +1,29 @@
-#fragment ProductBasicInfo on Product {
-#    productId
-#    productName
-#    productPrice
-#    stock
-#}
-#
-#
-#
-#fragment ProductInfoWithImages on Product {
-#    productId
-#    productName
-#    images
-#    productPrice
-#    stock
-#}
+fragment ProductBasicInfo on Product {
+    productId
+    productName
+    productPrice
+    stock
+}
+
+
+
+fragment ProductInfoWithImages on Product {
+    productId
+    productName
+    images
+    productPrice
+    stock
+}
 
 
 query GetAllProducts {
     getProducts {
         productId
         productName
-        images
         productPrice
         stock
+        ...ProductBasicInfo
+        ...ProductInfoWithImages
     }
 }
 
@@ -31,7 +32,6 @@ mutation AddProduct($product : ProductDto!) {
     saveProduct(dto : $product) {
         productId
         productName
-        images
         productPrice
         stock
     }

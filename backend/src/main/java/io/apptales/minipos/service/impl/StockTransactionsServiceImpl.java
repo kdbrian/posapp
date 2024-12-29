@@ -7,14 +7,19 @@ import io.apptales.minipos.data.model.StockTransaction;
 import io.apptales.minipos.service.StockTransactionsService;
 import io.apptales.minipos.util.errors.InvalidIdentifierFormatException;
 import io.apptales.minipos.util.errors.NotFoundException;
+import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class StockTransactionsServiceImpl implements StockTransactionsService {
@@ -29,7 +34,6 @@ public class StockTransactionsServiceImpl implements StockTransactionsService {
         this.mongoTemplate = mongoTemplate;
         this.productsDao = productsDao;
     }
-
 
     @Override
     public List<StockTransaction> getAllTransactions() {
@@ -116,6 +120,33 @@ public class StockTransactionsServiceImpl implements StockTransactionsService {
 
         return transactionDao.findById(id)
                 .orElseThrow(() -> new NotFoundException(id));
+    }
+
+    @Override
+    public Map<String, Integer> getStockInVsOutCount() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.group("transactionType").count().as("count")
+        );
+        AggregationResults<Document> results = mongoTemplate.aggregate(aggregation, "stockTransaction", Document.class);
+        return results.getMappedResults().stream()
+                .collect(Collectors.toMap(
+                        doc -> doc.getString("_id"),
+                        doc -> doc.getInteger("count")
+                ));
+    }
+
+    @Override
+    public Map<String, Integer> getProductsByCategories() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.unwind("categories"),
+                Aggregation.group("categories").count().as("count")
+        );
+        AggregationResults<Document> results = mongoTemplate.aggregate(aggregation,"product", Document.class);
+        return results.getMappedResults().stream()
+                .collect(Collectors.toMap(
+                        doc -> doc.getString("_id"),
+                        doc -> doc.getInteger("count")
+                ));
     }
 
 

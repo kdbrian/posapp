@@ -15,10 +15,4 @@ public class MiniposApplication {
 		SpringApplication.run(MiniposApplication.class, args);
 	}
 
-	/*Json scalar for deserialization */
-	@Bean
-	public GraphQLScalarType jsonScalar(){
-		return ExtendedScalars.Json;
-	}
-
 }

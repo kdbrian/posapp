@@ -113,7 +113,6 @@ private fun MainScreen(
 
     var checkingConnection by remember { mutableStateOf(false) }
     var actuatorRes by remember { mutableStateOf("") }
-    var searchQuery by remember { mutableStateOf("") }
     var checkingConnection1 = checkingConnection
     var actuatorRes1 = actuatorRes
 
