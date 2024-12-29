@@ -1,0 +1,67 @@
+fragment TransactionInfo on StockTransactionItem {
+    transactionId
+    dateAdded
+    dateUpdated
+    transactionType
+    product {
+        productId
+        productName
+        stock
+    }
+}
+
+query GetAllTransactions {
+    getAllTransactions {
+        ...TransactionInfo
+    }
+}
+
+query GetTransactionWithId($id: ID!) {
+    getTransactionWithId(id: $id) {
+        ...TransactionInfo
+    }
+}
+
+query GetTransactionsForDate($date: Float!) {
+    getTransactionsForDate(date: $date) {
+        ...TransactionInfo
+    }
+}
+
+mutation DeleteTransactionWithId($id: ID!) {
+    deleteTransaction(transactionId: $id)
+}
+
+query GetTransactionsBeforeDate($date: Float!) {
+    getTransactionsBeforeDate(date: $date) {
+        ...TransactionInfo
+    }
+}
+
+query GetTransactionsAfterDate($date: Float!) {
+    getTransactionsAfterDate(date: $date) {
+        ...TransactionInfo
+    }
+}
+
+query GetTransactionsBetweenDates($dateFrom: Float!, $dateTo: Float!) {
+    getTransactionsFromDateToDate(fromDate: $dateFrom, toDate: $dateTo) {
+        ...TransactionInfo
+    }
+}
+
+query GetProductTransaction($id: ID!) {
+    getTransactionsForProduct(productId: $id) {
+        ...TransactionInfo
+    }
+}
+
+mutation UpdateTransaction($transactionId: ID!) {
+    updateTransaction(transactionId: $transactionId) {
+        ...TransactionInfo
+    }
+}
+
+mutation DeleteTransaction($transactionId : ID!){
+    deleteTransaction(transactionId : $transactionId)
+}

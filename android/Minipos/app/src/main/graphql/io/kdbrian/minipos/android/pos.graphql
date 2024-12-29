@@ -1,0 +1,81 @@
+#fragment ProductBasicInfo on Product {
+#    productId
+#    productName
+#    productPrice
+#    stock
+#}
+#
+#
+#
+#fragment ProductInfoWithImages on Product {
+#    productId
+#    productName
+#    images
+#    productPrice
+#    stock
+#}
+
+
+query GetAllProducts {
+    getProducts {
+        productId
+        productName
+        images
+        productPrice
+        stock
+    }
+}
+
+
+mutation AddProduct($product : ProductDto!) {
+    saveProduct(dto : $product) {
+        productId
+        productName
+        images
+        productPrice
+        stock
+    }
+}
+
+
+query GetAllProductsWithImages {
+    getProducts {
+        productId
+        productName
+        images
+        productPrice
+        stock
+    }
+}
+
+query GetProductWithId($productId : ID!) {
+    getProductWithId(id: $productId) {
+        productName
+        productPrice
+        stock
+        images
+        #get more values (stats)
+    }
+}
+
+query SearchProductsWithName($name: String!) {
+    searchProductsWithName(name: $name) {
+        productId
+        productPrice
+        images
+    }
+}
+
+mutation UpdateProductStock(
+    $productId: ID!
+    $newStock: Int!
+    $transactiontype: StockTransactionType!
+) {
+    updateProductStock(
+        productId: $productId
+        newStock: $newStock
+        stockTransactionType: $transactiontype
+    ) {
+        stock
+    }
+}
