@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - hilttokoin
   pull_request:
     branches:
       - master
