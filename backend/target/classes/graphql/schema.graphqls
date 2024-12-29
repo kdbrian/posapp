@@ -1,0 +1,51 @@
+type Query {
+    # products
+    getProducts : [Product]
+    getProductWithId(id : ID!) : Product
+    getProductsWithName(name : String!) : [Product]
+
+    # images
+    getImages : [Images!]!
+
+    #pos
+    searchProductsWithName(name : String!) : [Product]
+    searchProductWithProductId(productId : ID!) : Product
+
+    # stock transactions
+    getAllTransactions : [StockTransactionItem!]
+    getTransactionWithId(id: ID!) : StockTransactionItem
+    getTransactionsForDate(date :  Float) : [StockTransactionItem]
+    getTransactionsBeforeDate(date :  Float) : [StockTransactionItem]
+    getTransactionsAfterDate(date :  Float) : [StockTransactionItem]
+    getTransactionsFromDateToDate(fromDate :  Float,toDate :  Float) : [StockTransactionItem]
+    getTransactionsForProduct(productId :  ID!) : [StockTransactionItem]
+
+
+    #aggregate
+
+
+}
+
+type Mutation {
+
+    # products
+    addProduct(addedBy: String , dto : ProductDto) : Product!
+    updateProduct(dto : ProductDto) : Product!
+    saveProduct(dto : ProductDto) : Product!
+    saveProducts(dto : [ProductDto!]!) : [Product!]!
+    deleteProducts(dto : [ProductDto!]!) : Boolean
+    clearProducts: Boolean
+    deleteProduct(dto : ProductDto) : Boolean
+    deleteProductWithId(id : ID!) : Boolean
+
+    #pos
+    updateProductStock(productId : ID! , newStock : Int!,  stockTransactionType : StockTransactionType!) : Product
+    updatePosProduct(dto : ProductDto) : Product!
+
+
+    #stock transactions
+    saveTransaction(transaction:StockTransactionItemInput) : StockTransactionItem
+    updateTransaction(transactionId:ID!) : StockTransactionItem
+    deleteTransaction(transactionId : ID!) : Boolean
+
+}

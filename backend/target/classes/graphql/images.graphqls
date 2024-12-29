@@ -1,0 +1,14 @@
+type Images {
+    product : Product
+    imageId : ID!
+    link : String!
+    metaInfo : ImageMetaData
+}
+
+type ImageMetaData {
+    fileType : String
+    fileSize : String
+    fileName : String
+    serverUrl : String
+}
+

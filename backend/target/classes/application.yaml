@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: minipos
+
+  data:
+    mongodb:
+      database: miniposdb
+
+
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphapp
+
+  servlet:
+    multipart:
+      enabled: true
+
+file:
+  upload-dir-product-images: '/home/whosdev/Downloads/minipos(1)/minipos/public/images/products'
+  upload-dir-shop-images: '/home/whosdev/Downloads/minipos(1)/minipos/public/images/shop'
+#  upload-dir: '/public'

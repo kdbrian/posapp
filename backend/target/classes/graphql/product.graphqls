@@ -1,0 +1,25 @@
+type Product {
+    productId : ID!
+    productName : String!
+    productPrice : Float
+    productDiscount : Float
+    stock : Int
+    dateAdded : Float
+    dateUpdated : Float
+    images : [String!]
+    categories : [String!]
+    insertingTransaction : String
+}
+
+input ProductDto {
+    productId : ID
+    productName : String!
+    productPrice : Float!
+    productDiscount : Float
+    stock : Int!
+    images : [String!]
+    categories : [String]
+    productInsertionTransaction : String
+}
+
+

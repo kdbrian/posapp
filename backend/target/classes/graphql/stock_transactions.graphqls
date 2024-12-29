@@ -1,0 +1,20 @@
+enum StockTransactionType {
+    STOCK_IN
+    STOCK_OUT
+}
+
+type StockTransactionItem {
+    transactionId : ID!
+    product : Product
+    addedBy : String
+    transactionType : StockTransactionType!
+    dateAdded : Float
+    dateUpdated : Float
+}
+
+input StockTransactionItemInput {
+    transactionId : ID
+    product : ID!
+    addedBy : String
+    transactionType : StockTransactionType!
+}
