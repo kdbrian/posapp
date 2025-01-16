@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.ApolloClient
-import io.kdbrian.minipos.android.data.remote.repo.TransactionsService
-import io.kdbrian.minipos.android.data.remote.repo.impl.TransactionsServiceImpl
+import io.kdbrian.minipos.android.domain.graphql.TransactionsService
+import io.kdbrian.minipos.android.data.remote.repo.TransactionsServiceImpl
 import io.kdbrian.minipos.android.util.Resource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

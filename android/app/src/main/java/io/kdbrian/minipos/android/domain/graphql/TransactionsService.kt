@@ -1,4 +1,4 @@
-package io.kdbrian.minipos.android.data.remote.repo
+package io.kdbrian.minipos.android.domain.graphql
 
 import src.main.graphql.GetAllTransactionsQuery
 import src.main.graphql.GetProductTransactionQuery

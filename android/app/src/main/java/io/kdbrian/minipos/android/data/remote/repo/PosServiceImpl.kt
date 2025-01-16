@@ -1,7 +1,7 @@
-package io.kdbrian.minipos.android.data.remote.repo.impl
+package io.kdbrian.minipos.android.data.remote.repo
 
 import com.apollographql.apollo.ApolloClient
-import io.kdbrian.minipos.android.data.remote.repo.PosService
+import io.kdbrian.minipos.android.domain.graphql.PosService
 import io.kdbrian.minipos.android.util.AppErrors
 import src.main.graphql.AddProductMutation
 import src.main.graphql.GetAllProductsQuery

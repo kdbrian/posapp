@@ -1,7 +1,7 @@
-package io.kdbrian.minipos.android.data.remote.repo.impl
+package io.kdbrian.minipos.android.data.remote.repo
 
 import com.apollographql.apollo.ApolloClient
-import io.kdbrian.minipos.android.data.remote.repo.TransactionsService
+import io.kdbrian.minipos.android.domain.graphql.TransactionsService
 import io.kdbrian.minipos.android.util.AppErrors
 import src.main.graphql.GetAllTransactionsQuery
 import src.main.graphql.GetProductTransactionQuery

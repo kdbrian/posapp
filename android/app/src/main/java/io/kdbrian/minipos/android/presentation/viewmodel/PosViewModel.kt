@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.ApolloClient
-import io.kdbrian.minipos.android.data.remote.repo.PosService
-import io.kdbrian.minipos.android.data.remote.repo.impl.PosServiceImpl
+import io.kdbrian.minipos.android.domain.graphql.PosService
+import io.kdbrian.minipos.android.data.remote.repo.PosServiceImpl
 import io.kdbrian.minipos.android.util.CategoryItem
 import io.kdbrian.minipos.android.util.Resource
 import kotlinx.coroutines.flow.MutableSharedFlow
