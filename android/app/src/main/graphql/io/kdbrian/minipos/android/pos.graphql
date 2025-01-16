@@ -5,8 +5,6 @@ fragment ProductBasicInfo on Product {
     stock
 }
 
-
-
 fragment ProductInfoWithImages on Product {
     productId
     productName
@@ -18,10 +16,10 @@ fragment ProductInfoWithImages on Product {
 
 query GetAllProducts {
     getProducts {
-        productId
-        productName
-        productPrice
-        stock
+#        productId
+#        productName
+#        productPrice
+#        stock
         ...ProductBasicInfo
         ...ProductInfoWithImages
     }
