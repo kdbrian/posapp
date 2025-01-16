@@ -1,7 +1,7 @@
 package io.kdbrian.minipos.android.data.remote.repo
 
 import com.apollographql.apollo.ApolloClient
-import io.kdbrian.minipos.android.domain.graphql.TransactionsService
+import io.kdbrian.minipos.android.domain.graphql.TransactionsRepository
 import io.kdbrian.minipos.android.util.AppErrors
 import src.main.graphql.GetAllTransactionsQuery
 import src.main.graphql.GetProductTransactionQuery
@@ -11,9 +11,9 @@ import src.main.graphql.GetTransactionsBeforeDateQuery
 import src.main.graphql.GetTransactionsBetweenDatesQuery
 import src.main.graphql.GetTransactionsForDateQuery
 
-class TransactionsServiceImpl(
+class TransactionsRepositoryImpl(
     private val apolloClient: ApolloClient
-) : TransactionsService {
+) : TransactionsRepository {
 
     override suspend fun getAllTransactions(): Result<GetAllTransactionsQuery.Data> {
         return try {

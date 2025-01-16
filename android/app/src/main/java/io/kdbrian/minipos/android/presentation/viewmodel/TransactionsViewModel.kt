@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.ApolloClient
-import io.kdbrian.minipos.android.domain.graphql.TransactionsService
-import io.kdbrian.minipos.android.data.remote.repo.TransactionsServiceImpl
+import io.kdbrian.minipos.android.domain.graphql.TransactionsRepository
+import io.kdbrian.minipos.android.data.remote.repo.TransactionsRepositoryImpl
 import io.kdbrian.minipos.android.util.Resource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,7 +19,7 @@ import src.main.graphql.GetTransactionsBetweenDatesQuery
 import src.main.graphql.GetTransactionsForDateQuery
 
 class TransactionsViewModel(
-    private val transactionsService: TransactionsService
+    private val transactionsRepository: TransactionsRepository
 ) : ViewModel() {
 
     private val _allTransactions: MutableSharedFlow<Resource<GetAllTransactionsQuery.Data>> =
@@ -65,7 +65,7 @@ class TransactionsViewModel(
     init {
 
         viewModelScope.launch {
-            transactionsService.getAllTransactions().fold(
+            transactionsRepository.getAllTransactions().fold(
                 onSuccess = {
                     _allTransactions.emit(Resource.Success(it))
                 },
@@ -78,7 +78,7 @@ class TransactionsViewModel(
 
     fun getTransactionWithId(productId: String) {
         viewModelScope.launch {
-            transactionsService.getTransactionWithId(productId).fold(
+            transactionsRepository.getTransactionWithId(productId).fold(
                 onSuccess = {
                     _transactionWithId.emit(Resource.Success(it))
                 },
@@ -91,7 +91,7 @@ class TransactionsViewModel(
 
     fun getTransactionsForDate(date: Double) {
         viewModelScope.launch {
-            transactionsService.getTransactionsForDate(date).fold(
+            transactionsRepository.getTransactionsForDate(date).fold(
                 onSuccess = {
                     _transactionForDate.emit(Resource.Success(it))
                 },
@@ -105,7 +105,7 @@ class TransactionsViewModel(
 
     fun getTransactionsBeforeDate(date: Double) {
         viewModelScope.launch {
-            transactionsService.getTransactionsBeforeDate(date).fold(
+            transactionsRepository.getTransactionsBeforeDate(date).fold(
                 onSuccess = {
                     _transactionBeforeDate.emit(Resource.Success(it))
                 },
@@ -118,7 +118,7 @@ class TransactionsViewModel(
 
     fun getTransactionsAfterDate(date: Double) {
         viewModelScope.launch {
-            transactionsService.getTransactionsAfterDate(date).fold(
+            transactionsRepository.getTransactionsAfterDate(date).fold(
                 onSuccess = {
                     _transactionAfterDate.emit(Resource.Success(it))
                 },
@@ -133,7 +133,7 @@ class TransactionsViewModel(
 
     fun getTransactionsBetweenDates(fromDate: Double, toDate: Double) {
         viewModelScope.launch {
-            transactionsService.getTransactionsBetweenDates(fromDate, toDate).fold(
+            transactionsRepository.getTransactionsBetweenDates(fromDate, toDate).fold(
                 onSuccess = {
                     _transactionBetweenDates.emit(Resource.Success(it))
                 },
@@ -146,7 +146,7 @@ class TransactionsViewModel(
 
     fun getProductTransactions(productId: String) {
         viewModelScope.launch {
-            transactionsService.getProductTransactions(productId).fold(
+            transactionsRepository.getProductTransactions(productId).fold(
                 onSuccess = {
                     _productTransactions.emit(Resource.Success(it))
                 },
@@ -158,14 +158,13 @@ class TransactionsViewModel(
         }
     }
 
-}
-
-@Suppress("UNCHECKED_CAST")
-class TransactionsViewModelProvider(
-    private val apolloClient: ApolloClient
-) : ViewModelProvider.Factory{
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val transactionsService = TransactionsServiceImpl(apolloClient)
-        return TransactionsViewModel(transactionsService) as T
+    @Suppress("UNCHECKED_CAST")
+    inner class Factory(
+        private val apolloClient: ApolloClient
+    ) : ViewModelProvider.Factory{
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            val transactionsService = TransactionsRepositoryImpl(apolloClient)
+            return TransactionsViewModel(transactionsService) as T
+        }
     }
 }

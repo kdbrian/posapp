@@ -8,7 +8,7 @@ import src.main.graphql.GetTransactionsBeforeDateQuery
 import src.main.graphql.GetTransactionsBetweenDatesQuery
 import src.main.graphql.GetTransactionsForDateQuery
 
-interface TransactionsService {
+interface TransactionsRepository {
     suspend fun getAllTransactions(): Result<GetAllTransactionsQuery.Data>
     suspend fun getTransactionWithId(id: String): Result<GetTransactionWithIdQuery.Data>
     suspend fun getTransactionsForDate(date: Double): Result<GetTransactionsForDateQuery.Data>
