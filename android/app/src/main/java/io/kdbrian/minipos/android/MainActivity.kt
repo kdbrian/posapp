@@ -69,10 +69,6 @@ class MainActivity : ComponentActivity() {
             val networkState by networkObserver1.observeAsState(initial = Resource.Loading())
 
             MiniposTheme {
-                MainScreen(
-                    actuatorHealthUrl,
-                    networkState = networkState
-                )
 
             }
         }
@@ -83,9 +79,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun MainScreenPrev() {
     MiniposTheme {
-        MainScreen(
-            actuatorHealthUrl = ""
-        )
     }
 }
 
@@ -105,130 +98,9 @@ val LocalApolloClient = staticCompositionLocalOf {
 }
 
 
-@Composable
-private fun MainScreen(
-    actuatorHealthUrl: String,
-    networkState: Resource<Boolean> = Resource.Loading(),
-) {
-
-    var checkingConnection by remember { mutableStateOf(false) }
-    var actuatorRes by remember { mutableStateOf("") }
-    var checkingConnection1 = checkingConnection
-    var actuatorRes1 = actuatorRes
-
-    val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-
-    LocalViewModelStoreOwner.current?.let { storeOwner ->
-
-        val posViewModel: PosViewModel = viewModel<PosViewModel>(
-            viewModelStoreOwner = storeOwner,
-            factory = PosViewModelProvider(LocalApolloClient.current),
-            key = "PosViewModel"
-        )
-
-        val transactionsViewModel: TransactionsViewModel = viewModel<TransactionsViewModel>(
-            viewModelStoreOwner = storeOwner,
-            factory = TransactionsViewModelProvider(LocalApolloClient.current),
-            key = "TransactionsViewModel"
-        )
-
-        CompositionLocalProvider(
-            LocalApolloClient provides LocalApolloClient.current,
-            LocalFontFamily provides LocalFontFamily.current
-        ) {
-
-            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
-                LaunchedEffect(checkingConnection1) {
-                    if (!checkingConnection1) {
-                        val health = Json.decodeFromString(
-                            ServerStatus.serializer(),
-                            HttpClient().get(actuatorHealthUrl).bodyAsText()
-                        )
-                        actuatorRes1 = health.status
-                    }
-
-                }
-
-                when (networkState) {
-                    is Resource.Error -> {
-                        actuatorRes1 = "No internet connection"
-                    }
-
-                    is Resource.Loading -> {
-                        actuatorRes1 = "Checking internet connection"
-                        checkingConnection1 = true
-                    }
-
-                    is Resource.Success -> {
-                        LaunchedEffect(Unit) {
-                            delay(200)
-                            checkingConnection1 = false
-                        }
-                    }
-                }
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                        .systemBarsPadding(),
-                ) {
-
-                    App(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        navController = navController,
-                        posViewModel = posViewModel,
-                        transactionsViewModel = transactionsViewModel
-                    )
-
-                }
-
-            }
-
-
-        }
-    }
-}
-
-@Composable
-fun NetworkTab(
-    name: String,
-    modifier: Modifier = Modifier,
-    networkState: Resource<Boolean> = Resource.Loading()
-) {
-    Row(
-        modifier = modifier
-            .padding(8.dp)
-            .background(
-                color = Color.LightGray,
-                shape = RoundedCornerShape(8.dp)
-            ),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-
-        if (networkState is Resource.Loading) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(24.dp)
-            )
-        } else
-            Text(
-                text = "$name!",
-                modifier = modifier
-                    .padding(8.dp)
-            )
-
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     MiniposTheme {
-        NetworkTab("Android")
     }
 }
