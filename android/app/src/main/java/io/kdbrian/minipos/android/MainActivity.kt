@@ -3,57 +3,58 @@ package io.kdbrian.minipos.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.ApolloRequest
+import com.apollographql.apollo.api.ApolloResponse
+import com.apollographql.apollo.api.Operation
+import com.apollographql.apollo.interceptor.ApolloInterceptor
+import com.apollographql.apollo.interceptor.ApolloInterceptorChain
 import com.apollographql.apollo.network.okHttpClient
 import io.kdbrian.minipos.android.BuildConfig.ngrokHost
-import io.kdbrian.minipos.android.presentation.viewmodel.PosViewModel
-import io.kdbrian.minipos.android.presentation.viewmodel.PosViewModelProvider
-import io.kdbrian.minipos.android.presentation.viewmodel.TransactionsViewModel
-import io.kdbrian.minipos.android.presentation.viewmodel.TransactionsViewModelProvider
-import io.kdbrian.minipos.android.ui.nav.App
+import io.kdbrian.minipos.android.BuildConfig.pcLocalhost
+import io.kdbrian.minipos.android.features.pos.DashBoard
+import io.kdbrian.minipos.android.features.products.ProductListing
+import io.kdbrian.minipos.android.presentation.viewmodel.ProductsViewModel
 import io.kdbrian.minipos.android.ui.theme.MiniposTheme
+import io.kdbrian.minipos.android.ui.theme.TextLocals
+import io.kdbrian.minipos.android.ui.theme.TextLocals.LocalDefaultTextStyle
+import io.kdbrian.minipos.android.ui.theme.TextLocals.defaultTextStyle
 import io.kdbrian.minipos.android.ui.theme.supreme
 import io.kdbrian.minipos.android.util.NetworkObserver
 import io.kdbrian.minipos.android.util.Resource
-import io.kdbrian.minipos.android.util.ServerStatus
-import io.ktor.client.HttpClient
-import io.ktor.client.request.get
-import io.ktor.client.statement.bodyAsText
-import kotlinx.coroutines.delay
-import kotlinx.serialization.json.Json
+import kotlinx.coroutines.flow.Flow
 import okhttp3.OkHttpClient
 import timber.log.Timber
 
+
+val apolloClient = ApolloClient.Builder()
+    .serverUrl("${pcLocalhost}graphql")
+    .okHttpClient(
+        OkHttpClient.Builder()
+            .addInterceptor {
+                Timber.d("for [${it.request().method}] : ${it.request().url}")
+                //check for connection
+                it.proceed(it.request())
+            }
+            .build()
+    )
+    .build()
+
+val LocalFontFamily = staticCompositionLocalOf { supreme }
+val LocalApolloClient = staticCompositionLocalOf { apolloClient }
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,15 +62,41 @@ class MainActivity : ComponentActivity() {
         val networkObserver1 = NetworkObserver(this)
         setContent {
             val emulatorLocalhost = BuildConfig.emulatorLocalhost
-            val ngrokHost = BuildConfig.ngrokHost
+            val ngrokHost = ngrokHost
             val pcLocalhost = BuildConfig.pcLocalhost
 
             Timber.d("Local $emulatorLocalhost $ngrokHost $pcLocalhost")
             val actuatorHealthUrl = "${ngrokHost}/actuator/health"
             val networkState by networkObserver1.observeAsState(initial = Resource.Loading())
 
-            MiniposTheme {
+            LocalViewModelStoreOwner.current?.let { viewModelStoreOwner ->
 
+
+
+
+                CompositionLocalProvider(
+                    LocalFontFamily provides supreme,
+                    LocalApolloClient provides apolloClient,
+                    LocalDefaultTextStyle provides defaultTextStyle
+
+                ) {
+
+                    val productsViewModel: ProductsViewModel = viewModel(
+                        viewModelStoreOwner = viewModelStoreOwner,
+                        key = "ProductsViewModel",
+                        factory = ProductsViewModel.Factory(apolloClient),
+                    )
+
+                    MiniposTheme {
+
+                        val allProductsResource by productsViewModel.allProducts.collectAsState(
+                            initial = Resource.Nothing()
+                        )
+
+                        DashBoard(productResource = allProductsResource, modifier = Modifier.padding(16.dp))
+
+                    }
+                }
             }
         }
     }
@@ -82,20 +109,6 @@ private fun MainScreenPrev() {
     }
 }
 
-val LocalFontFamily = staticCompositionLocalOf { supreme }
-val LocalApolloClient = staticCompositionLocalOf {
-    ApolloClient.Builder()
-        .serverUrl("$ngrokHost/graphql")
-        .okHttpClient(
-            OkHttpClient.Builder()
-                .addInterceptor {
-                    //check for connection
-                    it.proceed(it.request())
-                }
-                .build()
-        )
-        .build()
-}
 
 
 @Preview(showBackground = true)

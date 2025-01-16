@@ -1,0 +1,64 @@
+
+query GetAllProducts {
+    getProducts {
+        #        productId
+        #        productName
+        #        productPrice
+        #        stock
+        ...ProductBasicInfo
+        ...ProductInfoWithImages
+    }
+}
+
+
+mutation AddProduct($product : ProductDto!) {
+    saveProduct(dto : $product) {
+        productId
+        productName
+        productPrice
+        stock
+    }
+}
+
+
+query GetAllProductsWithImages {
+    getProducts {
+        productId
+        productName
+        images
+        productPrice
+        stock
+    }
+}
+
+query GetProductWithId($productId : ID!) {
+    getProductWithId(id: $productId) {
+        productName
+        productPrice
+        stock
+        images
+        #get more values (stats)
+    }
+}
+
+query SearchProductsWithName($name: String!) {
+    searchProductsWithName(name: $name) {
+        productId
+        productPrice
+        images
+    }
+}
+
+mutation UpdateProductStock(
+    $productId: ID!
+    $newStock: Int!
+    $transactiontype: StockTransactionType!
+) {
+    updateProductStock(
+        productId: $productId
+        newStock: $newStock
+        stockTransactionType: $transactiontype
+    ) {
+        stock
+    }
+}

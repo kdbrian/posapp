@@ -9,8 +9,7 @@ import src.main.graphql.UpdateProductStockMutation
 import src.main.graphql.type.ProductDto
 import src.main.graphql.type.StockTransactionType
 
-interface ProductsService {
-
+interface ProductsRepository {
     suspend fun getAllProducts(): Result<GetAllProductsQuery.Data>
     suspend fun getProductWithId(id : String): Result<GetProductWithIdQuery.Data>
     suspend fun addProduct(dto: ProductDto): Result<AddProductMutation.Data>

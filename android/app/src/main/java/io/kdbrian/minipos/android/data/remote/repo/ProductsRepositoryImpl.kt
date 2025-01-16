@@ -1,7 +1,7 @@
 package io.kdbrian.minipos.android.data.remote.repo
 
 import com.apollographql.apollo.ApolloClient
-import io.kdbrian.minipos.android.domain.graphql.ProductsService
+import io.kdbrian.minipos.android.domain.graphql.ProductsRepository
 import src.main.graphql.AddProductMutation
 import src.main.graphql.GetAllProductsQuery
 import src.main.graphql.GetAllProductsWithImagesQuery
@@ -10,17 +10,20 @@ import src.main.graphql.SearchProductsWithNameQuery
 import src.main.graphql.UpdateProductStockMutation
 import src.main.graphql.type.ProductDto
 import src.main.graphql.type.StockTransactionType
+import timber.log.Timber
 
-class ProductsServiceImpl(
+class ProductsRepositoryImpl(
     private val apolloClient: ApolloClient,
-) : ProductsService {
+) : ProductsRepository {
 
     override suspend fun getAllProducts(): Result<GetAllProductsQuery.Data> {
-        return apolloClient.query(GetAllProductsQuery()).execute().let { result ->
-            if (result.hasErrors())
+        val result = apolloClient.query(GetAllProductsQuery()).execute()
+        Timber.d("res ${result.hasErrors()} ${result.errors?.map { it.message }} ")
+
+        return if (result.hasErrors())
                 Result.failure(Exception(result.errors.toString()))
-            else
-                Result.success(result.data!!)
+        else {
+            Result.success(result.dataOrThrow())
         }
     }
 
