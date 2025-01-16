@@ -3,7 +3,6 @@ package io.kdbrian.minipos.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,7 +41,6 @@ import io.kdbrian.minipos.android.presentation.viewmodel.PosViewModelProvider
 import io.kdbrian.minipos.android.presentation.viewmodel.TransactionsViewModel
 import io.kdbrian.minipos.android.presentation.viewmodel.TransactionsViewModelProvider
 import io.kdbrian.minipos.android.ui.nav.App
-import io.kdbrian.minipos.android.ui.screens.ProductsScreen
 import io.kdbrian.minipos.android.ui.theme.MiniposTheme
 import io.kdbrian.minipos.android.ui.theme.supreme
 import io.kdbrian.minipos.android.util.NetworkObserver
@@ -62,9 +60,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val networkObserver1 = NetworkObserver(this)
         setContent {
-            val baseUrlLocalHost = BuildConfig.localhost
+            val emulatorLocalhost = BuildConfig.emulatorLocalhost
             val ngrokHost = BuildConfig.ngrokHost
-            Timber.d("Local $baseUrlLocalHost $ngrokHost")
+            val pcLocalhost = BuildConfig.pcLocalhost
+
+            Timber.d("Local $emulatorLocalhost $ngrokHost $pcLocalhost")
             val actuatorHealthUrl = "${ngrokHost}/actuator/health"
             val networkState by networkObserver1.observeAsState(initial = Resource.Loading())
 

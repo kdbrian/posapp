@@ -7,10 +7,19 @@ val ngrokHost: String =
 if (localPropertiesFile.exists()) {
     localProperties.load(localPropertiesFile.inputStream())
     println("Local properties loaded ${localProperties.getProperty("ngrokHost").removeSurrounding("\"")}")
-    localProperties.getProperty("ngrokHost")
-        .removeSurrounding("\"")
+    localProperties.getProperty("ngrokHost").removeSurrounding("\"")
 }else if (System.getenv("ngrokHost") != null)
     System.getenv("ngrokHost")
+else
+    "Set host url in env file"
+
+val pcLocalHost: String =
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+    println("Local properties pcLocalhost : ${localProperties.getProperty("pcLocalhost").removeSurrounding("\"")}")
+    localProperties.getProperty("pcLocalhost").removeSurrounding("\"")
+}else if (System.getenv("pcLocalhost") != null)
+    System.getenv("pcLocalhost")
 else
     "Set host url in env file"
 
@@ -117,7 +126,7 @@ apollo {
     service("refreshPosSchema") {
         packageName.set("src.main.graphql")
         introspection {
-            endpointUrl.set("$ngrokHost/graphql")
+            endpointUrl.set("$pcLocalHost/graphql")
             schemaFile.set(file("src/main/graphql/io/kdbrian/minipos/android/schema.graphqls"))
         }
     }

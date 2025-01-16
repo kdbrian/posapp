@@ -10,20 +10,20 @@ sealed class BottomAppBarItem(
     val label: String,
     val icon: ImageVector? = null,
     @DrawableRes val painter: Int? = null,
-    val route: AppScreens
+    val route: Route
 ) {
 
     data object ViewProducts : BottomAppBarItem(
         label = "Home",
         icon = Icons.Default.Home,
-        route = AppScreens.POS_HOME_SCREEN
+        route = Route.DASHBOARD
     )
 
 
     data object PortFolio : BottomAppBarItem(
         label = "Portfolio",
         painter = R.drawable.monitoring_24dp,
-        route = AppScreens.PORTFOLIO
+        route = Route.PORTFOLIO
     )
 
     companion object {

@@ -16,5 +16,4 @@ public class AppConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:/public/");
     }
 
-
 }
