@@ -2,6 +2,7 @@ package io.apptales.minipos.data.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
@@ -33,10 +34,13 @@ public class Product {
 
     private Long dateUpdated = System.currentTimeMillis();
 
+    @DBRef
+    private Store store;
+
     public Product() {
     }
 
-    public Product(String productId, String productName, Double productPrice, Double productDiscount, Long stock, Set<String> images, Set<String> categories, Long dateAdded, Long dateUpdated) {
+    public Product(String productId, String productName, Double productPrice, Double productDiscount, Long stock, Set<String> images, Set<String> categories, String insertingTransaction, Long dateAdded, Long dateUpdated, Store store) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
@@ -44,8 +48,10 @@ public class Product {
         this.stock = stock;
         this.images = images;
         this.categories = categories;
+        this.insertingTransaction = insertingTransaction;
         this.dateAdded = dateAdded;
         this.dateUpdated = dateUpdated;
+        this.store = store;
     }
 
     public Product(String productName, Double productPrice, Double productDiscount, Long stock, Set<String> categories, String insertingTransaction) {
@@ -181,6 +187,14 @@ public class Product {
         this.dateUpdated = dateUpdated;
     }
 
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -191,9 +205,10 @@ public class Product {
                 ", stock=" + stock +
                 ", images=" + images +
                 ", categories=" + categories +
-                ", insertingTransaction=" + insertingTransaction +
+                ", insertingTransaction='" + insertingTransaction + '\'' +
                 ", dateAdded=" + dateAdded +
                 ", dateUpdated=" + dateUpdated +
+                ", store=" + store +
                 '}';
     }
 }
