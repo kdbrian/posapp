@@ -13,15 +13,20 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.network.okHttpClient
 import io.kdbrian.minipos.android.BuildConfig.ngrokHost
 import io.kdbrian.minipos.android.BuildConfig.pcLocalhost
+import io.kdbrian.minipos.android.features.transactions.TransactionsListing
 import io.kdbrian.minipos.android.presentation.viewmodel.ProductsViewModel
 import io.kdbrian.minipos.android.presentation.viewmodel.TransactionsViewModel
+import io.kdbrian.minipos.android.ui.composables.BottomBar
 import io.kdbrian.minipos.android.ui.nav.App
+import io.kdbrian.minipos.android.ui.nav.BottomAppBarItem
 import io.kdbrian.minipos.android.ui.theme.MiniposTheme
 import io.kdbrian.minipos.android.ui.theme.TextLocals.LocalDefaultTextStyle
 import io.kdbrian.minipos.android.ui.theme.TextLocals.defaultTextStyle
@@ -78,28 +83,29 @@ class MainActivity : ComponentActivity() {
 
                     val productsViewModel: ProductsViewModel = viewModel(
                         viewModelStoreOwner = viewModelStoreOwner,
-                        key = TransactionsViewModel::class.simpleName,
+                        key = ProductsViewModel::class.simpleName,
                         factory = ProductsViewModel.Factory(LocalApolloClient.current),
                     )
 
                     MiniposTheme {
 
+                        val navController = rememberNavController()
+
                         //continue from transactions -> design, implement, test
-                        val allProductsResource by productsViewModel.allProducts.collectAsState(
-                            initial = Resource.Nothing()
-                        )
-                        val allTransactionsResource by transactionsViewModel.allTransactions.collectAsState(initial = Resource.Nothing())
 
                         Scaffold(
                             bottomBar = {
-
-
+                                BottomBar(
+                                    items = BottomAppBarItem.twoScreenBottomBarItems,
+                                    navController = navController
+                                )
                             }
                         ) { paddingValues ->
                             App(
+                                navController = navController,
                                 modifier = Modifier.padding(paddingValues),
-                                productResource = allProductsResource,
-                                transactionResource = allTransactionsResource
+                                transactionsViewModel = transactionsViewModel,
+                                productsViewModel = productsViewModel
                             )
                         }
 

@@ -3,6 +3,7 @@ package io.kdbrian.minipos.android.ui.nav
 import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.rounded.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.kdbrian.minipos.android.R
 
@@ -15,14 +16,14 @@ sealed class BottomAppBarItem(
 
     data object ViewProducts : BottomAppBarItem(
         label = "Portfolio",
-        icon = Icons.Default.Home,
+        icon = Icons.Rounded.Home,
         route = Route.DASHBOARD
     )
 
     data object PortFolio : BottomAppBarItem(
         label = "Transactions",
         painter = R.drawable.monitoring_24dp,
-        route = Route.PORTFOLIO
+        route = Route.ALLTRANSACTIONS
     )
 
     companion object{

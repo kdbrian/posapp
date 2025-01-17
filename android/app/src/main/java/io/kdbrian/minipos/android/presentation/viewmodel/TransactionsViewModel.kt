@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.ApolloClient
-import io.kdbrian.minipos.android.domain.graphql.TransactionsRepository
 import io.kdbrian.minipos.android.data.remote.repo.TransactionsRepositoryImpl
+import io.kdbrian.minipos.android.domain.graphql.TransactionsRepository
 import io.kdbrian.minipos.android.util.Resource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -17,6 +17,7 @@ import src.main.graphql.GetTransactionsAfterDateQuery
 import src.main.graphql.GetTransactionsBeforeDateQuery
 import src.main.graphql.GetTransactionsBetweenDatesQuery
 import src.main.graphql.GetTransactionsForDateQuery
+import timber.log.Timber
 
 class TransactionsViewModel(
     private val transactionsRepository: TransactionsRepository
@@ -64,17 +65,24 @@ class TransactionsViewModel(
 
     init {
 
+        getTransactions()
+    }
+
+    fun getTransactions() {
+        println("invoked")
         viewModelScope.launch {
             transactionsRepository.getAllTransactions().fold(
                 onSuccess = {
+                    Timber.d("got $it")
                     _allTransactions.emit(Resource.Success(it))
                 },
                 onFailure = {
+                    Timber.d("failed $it")
                     _allTransactions.emit(Resource.Error(it.message.toString()))
                 }
             )
         }
-    }
+        }
 
     fun getTransactionWithId(productId: String) {
         viewModelScope.launch {

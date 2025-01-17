@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,11 +18,14 @@ import io.kdbrian.minipos.android.ui.theme.MiniposTheme
 import io.kdbrian.minipos.android.util.Resource
 import src.main.graphql.GetAllTransactionsQuery
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionsListing(
     modifier: Modifier = Modifier,
-    transactionResource: Resource<GetAllTransactionsQuery.Data> = Resource.Loading(),
+    transactionResource: Resource<GetAllTransactionsQuery.Data>,
+    onRefresh: () -> Unit = {},
 ) {
+
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         when (transactionResource) {
             is Resource.Error -> CenteredText(message = transactionResource.message.toString())
@@ -32,13 +36,12 @@ fun TransactionsListing(
                     if (transactions.isEmpty()) {
                         CenteredText(message = "No transactions yet.")
                     } else {
-
                         if (transactions.size > 100) {
-                            LazyColumn(modifier = modifier) {
-                                items(transactions.map { it.transactionInfo }){
+                            LazyColumn {
+                                items(transactions.map { it.transactionInfo }) {
                                     TransactionItem(
                                         transactionItem = it,
-                                        onSelect = {  }
+                                        onSelect = { }
                                     )
                                     HorizontalDivider()
                                 }
@@ -46,14 +49,14 @@ fun TransactionsListing(
                         } else {
                             val verticalScroll = rememberScrollState()
                             Column(
-                                modifier = modifier
+                                modifier = Modifier
                                     .fillMaxSize()
                                     .verticalScroll(verticalScroll)
                             ) {
                                 transactions.map { it.transactionInfo }.forEach {
                                     TransactionItem(
                                         transactionItem = it,
-                                        onSelect = {  }
+                                        onSelect = { }
                                     )
 
                                     HorizontalDivider()
@@ -66,8 +69,6 @@ fun TransactionsListing(
             }
         }
     }
-
-
 }
 
 
@@ -75,7 +76,7 @@ fun TransactionsListing(
 @Composable
 private fun TransactionsListingPrev() {
     MiniposTheme {
-        TransactionsListing()
+//        TransactionsListing()
     }
 }
 

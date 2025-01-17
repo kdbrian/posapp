@@ -24,11 +24,13 @@ import io.kdbrian.minipos.android.ui.theme.MiniposTheme
 import io.kdbrian.minipos.android.ui.theme.TextLocals.LocalDefaultTextStyle
 import io.kdbrian.minipos.android.util.Resource
 import src.main.graphql.GetAllProductsQuery
+import src.main.graphql.GetAllTransactionsQuery
 
 @Composable
 fun DashBoard(
     modifier: Modifier = Modifier,
     productResource: Resource<GetAllProductsQuery.Data>,
+    transactionsResource: Resource<GetAllTransactionsQuery.Data>,
 ) {
 
     Column(
@@ -47,20 +49,28 @@ fun DashBoard(
                 stats = if (productResource is Resource.Success) {
                     "${productResource.data?.getProducts?.size}"
                 } else
-                    "3,000"
+                    "0, 000"
             )
 
             StatsCard(
                 modifier = Modifier.weight(1f),
                 title = "Transactions",
-                stats = "20,000"
+                stats = if (transactionsResource is Resource.Success)
+                    "${transactionsResource.data?.getAllTransactions?.size}"
+                else
+                    "0, 000"
             )
 
         }
 
         Spacer(Modifier.height(12.dp))
 
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
 
             Text(
                 text = "Products",
@@ -81,7 +91,6 @@ fun DashBoard(
 
         }
 
-
         ProductListing(
             modifier = Modifier.weight(1f),
             allProductsResource = productResource
@@ -98,6 +107,7 @@ private fun DashBoardPrev() {
         DashBoard(
             Modifier.padding(12.dp),
             productResource = Resource.Loading(),
+            transactionsResource = Resource.Loading()
         )
     }
 }

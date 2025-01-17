@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
@@ -24,7 +25,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.kdbrian.minipos.android.R
@@ -73,13 +73,19 @@ fun ProductItemInListing(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             painter = painterResource(R.drawable.round_attach_money_24),
-                            contentDescription = "price"
+                            contentDescription = "price",
+                            modifier = Modifier.size(20.dp)
                         )
 
                         Text(
-                            text = LoremIpsum(2).values.joinToString(),
+                            text = String.format(
+                                Locale.getDefault(),
+                                "%.2f",
+                                productInfo.productPrice
+                            ),
                             style = LocalDefaultTextStyle.current.copy(
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 14.sp
                             )
                         )
 
@@ -89,19 +95,20 @@ fun ProductItemInListing(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             painter = painterResource(R.drawable.round_inventory_24),
-                            contentDescription = "price"
+                            contentDescription = "stock",
+                            modifier = Modifier.size(25.dp).padding(end = 6.dp)
                         )
 
                         //todo: format according to user settings
                         Text(
                             text = buildAnnotatedString {
                                 withStyle(SpanStyle(color = moneyOrange)){
-                                    append(String.format(Locale.getDefault(), "%.2f",productInfo.productPrice))
+                                    append("${productInfo.stock}")
                                 }
                             },
                             style = LocalDefaultTextStyle.current.copy(
                                 fontWeight = FontWeight.SemiBold,
-                                fontSize = 16.sp
+                                fontSize = 14.sp
                             )
                         )
 

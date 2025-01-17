@@ -10,6 +10,7 @@ import src.main.graphql.GetTransactionsAfterDateQuery
 import src.main.graphql.GetTransactionsBeforeDateQuery
 import src.main.graphql.GetTransactionsBetweenDatesQuery
 import src.main.graphql.GetTransactionsForDateQuery
+import timber.log.Timber
 
 class TransactionsRepositoryImpl(
     private val apolloClient: ApolloClient
@@ -25,6 +26,7 @@ class TransactionsRepositoryImpl(
                 Result.success(allTransactions.data!!)
             }
         }catch (e : Exception){
+            Timber.e(e)
             AppErrors.handleErrors(e)
         }
     }
@@ -32,10 +34,11 @@ class TransactionsRepositoryImpl(
     override suspend fun getTransactionWithId(id: String): Result<GetTransactionWithIdQuery.Data> {
         return try {
             val allTransactions = apolloClient.query(GetTransactionWithIdQuery(id)).execute()
-
             if (allTransactions.hasErrors()){
+                Timber.d("errors ${allTransactions.errors.toString()}")
                 Result.failure(Exception("Error fetching all transactions"))
             }else{
+                Timber.d("Transactions ${allTransactions.data}")
                 Result.success(allTransactions.data!!)
             }
         }catch (e : Exception){

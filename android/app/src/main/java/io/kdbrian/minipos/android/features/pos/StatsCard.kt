@@ -40,6 +40,7 @@ fun StatsCard(
         Text(
             text = title,
             style = LocalDefaultTextStyle.current.copy(
+                fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.LightGray
             )
