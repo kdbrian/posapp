@@ -21,5 +21,4 @@ public interface StoreService {
 
     void deleteStore(String storeId);
 
-
 }

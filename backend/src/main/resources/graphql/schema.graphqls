@@ -1,4 +1,5 @@
 type Query {
+
     # products
     getProducts : [Product]
     getProductWithId(id : ID!) : Product
@@ -20,6 +21,11 @@ type Query {
     getTransactionsFromDateToDate(fromDate :  Float,toDate :  Float) : [StockTransactionItem]
     getTransactionsForProduct(productId :  ID!) : [StockTransactionItem]
 
+    #stores
+    getAllStores :  [Store]
+    getStoreById(id : ID!) :  Store
+    getStoreByName(name : String !) : [ Store]
+    getStoreByLocationName(name : String !) : [ Store]
 
     #aggregate
 
@@ -41,6 +47,11 @@ type Mutation {
     #pos
     updateProductStock(productId : ID! , newStock : Int!,  stockTransactionType : StockTransactionType!) : Product
     updatePosProduct(dto : ProductDto) : Product!
+
+    # store
+    addStore(dto : StoreDto!) : Store
+    updateStore(dto : StoreDto!) : Store
+    deleteStore(dto : StoreDto!) : Boolean
 
 
     #stock transactions
