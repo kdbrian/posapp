@@ -11,8 +11,12 @@ sealed class Route {
     @Serializable
     data object ALLPRODUCTS : Route()
 
+
     @Serializable
-    data object VIEW_SEARCH_PRODUCT_RESULTS : Route()
+    data class VIEWPRODUCT(val productId : String) : Route()
+
+    @Serializable
+    data object ALLTRANSACTIONS : Route()
 
     @Serializable
     data object VIEW_SINGLE_PRODUCT : Route()

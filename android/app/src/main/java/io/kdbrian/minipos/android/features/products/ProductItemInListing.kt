@@ -38,11 +38,12 @@ import java.util.Locale
 @Composable
 fun ProductItemInListing(
     modifier: Modifier = Modifier,
-    shape : Shape = RoundedCornerShape(12.dp),
-    productInfo : ProductBasicInfo
+    shape: Shape = RoundedCornerShape(12.dp),
+    productInfo: ProductBasicInfo,
+    onExpandProductBasicInfo: (ProductBasicInfo) -> Unit = { _ -> },
 ) {
     Surface(
-        onClick = { },
+        onClick = { onExpandProductBasicInfo(productInfo) },
         shape = shape,
         modifier = modifier.fillMaxWidth(),
     ) {

@@ -14,23 +14,19 @@ sealed class BottomAppBarItem(
 ) {
 
     data object ViewProducts : BottomAppBarItem(
-        label = "Home",
+        label = "Portfolio",
         icon = Icons.Default.Home,
         route = Route.DASHBOARD
     )
 
-
     data object PortFolio : BottomAppBarItem(
-        label = "Portfolio",
+        label = "Transactions",
         painter = R.drawable.monitoring_24dp,
         route = Route.PORTFOLIO
     )
 
-    companion object {
-        val TWOSCREENHOMEMODE = listOf(
-            ViewProducts,
-            PortFolio
-        )
+    companion object{
+        val twoScreenBottomBarItems = listOf(ViewProducts, PortFolio)
     }
 
 }
