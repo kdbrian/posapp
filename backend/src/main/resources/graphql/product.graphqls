@@ -9,6 +9,7 @@ type Product {
     images : [String!]
     categories : [String!]
     insertingTransaction : String
+    store : Store
 }
 
 input ProductDto {
@@ -20,6 +21,7 @@ input ProductDto {
     images : [String!]
     categories : [String]
     productInsertionTransaction : String
+    storeId : String
 }
 
 
