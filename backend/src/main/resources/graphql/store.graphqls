@@ -1,0 +1,20 @@
+type Store{
+    storeOwner : String
+    storeName : String
+    storeLocation : String
+    absoluteLocation : AbsoluteLocation
+}
+
+type AbsoluteLocation{
+    latitude : Float
+    longitude : Float
+}
+
+
+input StoreDto {
+    storeOwner :  String
+    storeName :  String
+    storeLocation :  String
+    latitude  :  Float
+    longitude  :  Float
+}
