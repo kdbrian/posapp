@@ -13,8 +13,11 @@ import io.kdbrian.minipos.android.ui.theme.TextLocals.LocalDefaultTextStyle
 
 
 @Composable
-fun CenteredText(message: String) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+fun CenteredText(
+    modifier: Modifier = Modifier,
+    message: String = "Nothing here",
+) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(
             text = message,
             style = LocalDefaultTextStyle.current.copy(

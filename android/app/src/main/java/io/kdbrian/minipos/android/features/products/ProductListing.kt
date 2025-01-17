@@ -29,12 +29,12 @@ fun ProductListing(
 
     when (allProductsResource) {
         is Resource.Error -> {
-            CenteredText(allProductsResource.message.toString())
+            CenteredText(message = allProductsResource.message.toString())
         }
 
         is Resource.Loading -> {
             //todo : implement loading screen
-            CenteredText("Fetching products...")
+            CenteredText(message = "Fetching products...")
         }
 
         is Resource.Nothing -> CenteredText(message = "Nothing here.")

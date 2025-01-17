@@ -159,7 +159,7 @@ class TransactionsViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    inner class Factory(
+    class Factory(
         private val apolloClient: ApolloClient
     ) : ViewModelProvider.Factory{
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

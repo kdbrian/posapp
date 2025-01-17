@@ -27,6 +27,7 @@ import io.kdbrian.minipos.android.BuildConfig.ngrokHost
 import io.kdbrian.minipos.android.BuildConfig.pcLocalhost
 import io.kdbrian.minipos.android.features.pos.DashBoard
 import io.kdbrian.minipos.android.features.products.ProductListing
+import io.kdbrian.minipos.android.features.transactions.TransactionsListing
 import io.kdbrian.minipos.android.presentation.viewmodel.ProductsViewModel
 import io.kdbrian.minipos.android.presentation.viewmodel.TransactionsViewModel
 import io.kdbrian.minipos.android.ui.theme.MiniposTheme
@@ -38,6 +39,7 @@ import io.kdbrian.minipos.android.util.NetworkObserver
 import io.kdbrian.minipos.android.util.Resource
 import kotlinx.coroutines.flow.Flow
 import okhttp3.OkHttpClient
+import src.main.graphql.fragment.TransactionInfo
 import timber.log.Timber
 
 
@@ -64,7 +66,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val emulatorLocalhost = BuildConfig.emulatorLocalhost
             val ngrokHost = ngrokHost
-            val pcLocalhost = BuildConfig.pcLocalhost
+            val pcLocalhost = pcLocalhost
 
             Timber.d("Local $emulatorLocalhost $ngrokHost $pcLocalhost")
             val actuatorHealthUrl = "${ngrokHost}/actuator/health"
@@ -85,13 +87,15 @@ class MainActivity : ComponentActivity() {
                     val transactionsViewModel: TransactionsViewModel = viewModel(
                         viewModelStoreOwner = viewModelStoreOwner,
                         key = TransactionsViewModel::class.simpleName,
-                        factory = ProductsViewModel.Factory(apolloClient),
+                        factory = TransactionsViewModel.Factory(LocalApolloClient.current),
                     )
 
                     MiniposTheme {
 
                         //continue from transactions -> design, implement, test
                         val allTransactionsResource by transactionsViewModel.allTransactions.collectAsState(initial = Resource.Nothing())
+
+                        TransactionsListing(transactionResource = allTransactionsResource)
 
                     }
                 }
