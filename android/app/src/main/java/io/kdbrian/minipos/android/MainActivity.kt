@@ -28,6 +28,7 @@ import io.kdbrian.minipos.android.BuildConfig.pcLocalhost
 import io.kdbrian.minipos.android.features.pos.DashBoard
 import io.kdbrian.minipos.android.features.products.ProductListing
 import io.kdbrian.minipos.android.presentation.viewmodel.ProductsViewModel
+import io.kdbrian.minipos.android.presentation.viewmodel.TransactionsViewModel
 import io.kdbrian.minipos.android.ui.theme.MiniposTheme
 import io.kdbrian.minipos.android.ui.theme.TextLocals
 import io.kdbrian.minipos.android.ui.theme.TextLocals.LocalDefaultTextStyle
@@ -81,19 +82,16 @@ class MainActivity : ComponentActivity() {
 
                 ) {
 
-                    val productsViewModel: ProductsViewModel = viewModel(
+                    val transactionsViewModel: TransactionsViewModel = viewModel(
                         viewModelStoreOwner = viewModelStoreOwner,
-                        key = "ProductsViewModel",
+                        key = TransactionsViewModel::class.simpleName,
                         factory = ProductsViewModel.Factory(apolloClient),
                     )
 
                     MiniposTheme {
 
-                        val allProductsResource by productsViewModel.allProducts.collectAsState(
-                            initial = Resource.Nothing()
-                        )
-
-                        DashBoard(productResource = allProductsResource, modifier = Modifier.padding(16.dp))
+                        //continue from transactions -> design, implement, test
+                        val allTransactionsResource by transactionsViewModel.allTransactions.collectAsState(initial = Resource.Nothing())
 
                     }
                 }
