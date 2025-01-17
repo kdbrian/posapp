@@ -2,3 +2,4 @@
 /**/.gradle
 /**/.mvn
 /**/target/**
+backend/target/**
