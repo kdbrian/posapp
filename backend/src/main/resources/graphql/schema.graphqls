@@ -51,7 +51,7 @@ type Mutation {
     # store
     addStore(dto : StoreDto!) : Store
     updateStore(dto : StoreDto!) : Store
-    deleteStore(dto : StoreDto!) : Boolean
+    deleteStore(id: ID!) : Boolean
 
 
     #stock transactions

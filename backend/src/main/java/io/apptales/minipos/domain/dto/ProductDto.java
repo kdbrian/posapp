@@ -1,11 +1,15 @@
 package io.apptales.minipos.domain.dto;
 
+import io.apptales.minipos.data.model.Store;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class ProductDto {
 
     private String productId;
+
+    private String store;
 
     transient private String productInsertionTransaction;
 
@@ -27,10 +31,9 @@ public class ProductDto {
     public ProductDto() {
     }
 
-
-
-    public ProductDto(String productId, String productInsertionTransaction, String productName, Double productPrice, Double productDiscount, Set<String> images, Set<String> categories, Long stock, Long dateAdded, Long dateUpdated) {
+    public ProductDto(String productId, String store, String productInsertionTransaction, String productName, Double productPrice, Double productDiscount, Set<String> images, Set<String> categories, Long stock, Long dateAdded, Long dateUpdated) {
         this.productId = productId;
+        this.store = store;
         this.productInsertionTransaction = productInsertionTransaction;
         this.productName = productName;
         this.productPrice = productPrice;
@@ -49,7 +52,6 @@ public class ProductDto {
         this.stock = stock;
         this.productInsertionTransaction = productInsertionTransaction;
     }
-
 
     public String getProductId() {
         return productId;

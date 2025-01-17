@@ -1,4 +1,4 @@
-package io.apptales.minipos.domain.graphql;
+package io.apptales.minipos.controller.graphql;
 
 import io.apptales.minipos.data.StockTransactionType;
 import io.apptales.minipos.data.model.Product;
@@ -24,7 +24,7 @@ public class PosGraphController {
 
 
 
-    @QueryMapping(name = "getAllProducts")
+    @QueryMapping
     public List<Product> getAllProducts() {
         return posService.getAllProducts();
     }

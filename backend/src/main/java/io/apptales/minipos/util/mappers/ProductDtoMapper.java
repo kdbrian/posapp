@@ -17,8 +17,10 @@ public class ProductDtoMapper extends EntityToDtoMapper<Product, ProductDto> {
                 productDto.getStock(),
                 productDto.getImages(),
                 productDto.getCategories(),
+                productDto.getProductInsertionTransaction(),
                 productDto.getDateAdded(),
-                productDto.getDateUpdated()
+                productDto.getDateUpdated(),
+                null
         );
     }
 
@@ -26,6 +28,7 @@ public class ProductDtoMapper extends EntityToDtoMapper<Product, ProductDto> {
     public ProductDto toDto(Product product) {
         return new ProductDto(
                 product.getProductId(),
+                product.getStore().getStoreId(),
                 product.getInsertingTransaction(),
                 product.getProductName(),
                 product.getProductPrice(),

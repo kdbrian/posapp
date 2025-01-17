@@ -1,4 +1,5 @@
 type Store{
+    storeId : String
     storeOwner : String
     storeName : String
     storeLocation : String
@@ -12,6 +13,7 @@ type AbsoluteLocation{
 
 
 input StoreDto {
+    storeId :  String
     storeOwner :  String
     storeName :  String
     storeLocation :  String

@@ -1,23 +1,30 @@
 package io.apptales.minipos.domain.dto;
 
-
-import io.apptales.minipos.data.model.AbsoluteLocation;
-
 public class StoreDto {
 
     private String storeOwner;
 
-    private String storeName;
+    private String storeId;
+
+        private String storeName;
 
     private String storeLocation;
 
-    private Long latitude ;
+    private Long latitude;
 
-    private Long longitude ;
+    private Long longitude;
 
     public StoreDto() {
     }
 
+    public StoreDto(String storeId, String storeOwner, String storeName, String storeLocation, Long latitude, Long longitude) {
+        this.storeId = storeId;
+        this.storeOwner = storeOwner;
+        this.storeName = storeName;
+        this.storeLocation = storeLocation;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
     public StoreDto(String storeOwner, String storeName, String storeLocation, Long latitude, Long longitude) {
         this.storeOwner = storeOwner;
@@ -68,10 +75,19 @@ public class StoreDto {
         this.longitude = longitude;
     }
 
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+
     @Override
     public String toString() {
         return "StoreDto{" +
                 "storeOwner='" + storeOwner + '\'' +
+                ", storeId='" + storeId + '\'' +
                 ", storeName='" + storeName + '\'' +
                 ", storeLocation='" + storeLocation + '\'' +
                 ", latitude=" + latitude +

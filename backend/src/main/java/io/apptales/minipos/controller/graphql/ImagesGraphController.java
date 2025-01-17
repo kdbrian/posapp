@@ -1,4 +1,4 @@
-package io.apptales.minipos.domain.graphql;
+package io.apptales.minipos.controller.graphql;
 
 import io.apptales.minipos.data.model.Images;
 import io.apptales.minipos.service.ImagesService;

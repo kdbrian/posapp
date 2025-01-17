@@ -24,6 +24,7 @@ public class StoreDtoMapper extends EntityToDtoMapper<Store, StoreDto> {
     @Override
     public StoreDto toDto(Store store) {
         return new StoreDto(
+                store.getStoreId(),
                 store.getStoreOwner(),
                 store.getStoreName(),
                 store.getStoreLocation(),
